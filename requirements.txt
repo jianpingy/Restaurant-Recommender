@@ -1,0 +1,11 @@
+crewai==0.80.0
+crewai-tools==0.38.0
+langchain==0.3.27
+langchain-community==0.3.19
+langchain_chroma==0.1.2
+langchain_ibm==0.3.0
+ibm-watsonx-ai==1.1.14
+ibm-watson-machine-learning==1.0.360
+unstructured==0.15.0
+databricks-sdk==0.57.0
+gradio==5.46.0
