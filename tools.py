@@ -62,20 +62,20 @@ def crew_builup():
 
             signature_dishes = ''
             for i in range(len(shop['signature_items'])):
-                signature_dishes += f'Dish {i+1}: {shop['signature_items'][i]}.\n'
+                signature_dishes += f"Dish {i+1}: {shop['signature_items'][i]}.\n"
         
             review_contents = ''
             for i in range(len(shop['review_titles'])):
-                review_contents += f'Review {i+1}. Title: {shop['review_titles'][i]}. Text: {shop['reviews'][i]}.\n'
+                review_contents += f"Review {i+1}. Title: {shop['review_titles'][i]}. Text: {shop['reviews'][i]}.\n"
                 
             content = (
-                f'Shop name: {shop['label']}. ' + 
-                f'Shop type:  {shop['type']}. ' + 
-                f'Shop location: {shop['location']}. ' +
-                f'Shop rating: {shop['rating']}. ' +
-                f'Shop price_range: {len(shop['price_range'])//3}. ' +
-                f'Shop short description: {shop['short_description']}. \n\n' +
-                'The following are the signature dishes. \n' +
+                f"Shop name: {shop['label']}. " + 
+                f"Shop type:  {shop['type']}. " + 
+                f"Shop location: {shop['location']}. " +
+                f"Shop rating: {shop['rating']}. " +
+                f"Shop price_range: {len(shop['price_range'])//3}. " +
+                f"Shop short description: {shop['short_description']}. \n\n" +
+                "The following are the signature dishes. \n" +
                 signature_dishes + '\n' +
                 'The following are the sampled reviews. \n' +
                 review_contents
