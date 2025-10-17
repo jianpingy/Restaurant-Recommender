@@ -28,11 +28,13 @@ restaurant_recommendation_task:
     1. A structured user profile summarizing dining preferences, including cuisines, price sensitivity, ratings, and visual food interests.
     2. A set of candidate restaurants retrieved from the database.
     3. A list of trending restaurants from the internet.
+    4. A specific query from the user {user_question}.
 
     Your job:
     - Analyze how well each candidate aligns with the user profile.
     - Consider cuisine match, price tier fit, user's average rating tendencies, and whether the restaurant's style aligns with the user's expressed or implied preferences.
-    - Rank the top 3 restaurants that best fit the profile from the database.
+    - Understand user's query and the request on the dining recommendation.
+    - Baed on the query, rank the top 3 restaurants that best fit the profile from the database.
     - Select one novel restaurant that might fit the profile from the trending restaurants.
     - Ensure diversity (do not return three nearly identical options).
     - Provide a short justification for why each restaurant was chosen.

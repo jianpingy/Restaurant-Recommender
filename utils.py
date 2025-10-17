@@ -41,39 +41,39 @@ def restaurant_image_analysis(model,
     Analyze the images in users' reviews.
     """
     curr = []
-    if len(image_input) == 0:
+    if image_input is None or len(image_input) == 0:
         curr.append('No images are included.')
-    
-    for image_path, _ in image_input:
-        try:
-            with open(image_path, "rb") as image_file:
-                # Encode the image to a base64 string
-                encoded_image = base64.b64encode(image_file.read()).decode("utf-8")
+    else:
+        for image_path, _ in image_input:
+            try:
+                with open(image_path, "rb") as image_file:
+                    # Encode the image to a base64 string
+                    encoded_image = base64.b64encode(image_file.read()).decode("utf-8")
 
-            prompt = """
-            You are a specialist in interpreting food and dining photography.
-            You carefully study visual elements to uncover what words often leave out: the vibrancy of presentation, the elegance of plating, the portion size, and even the mood of the dining environment. 
-            You understand that users take photos for a reason: sometimes to remember a favorite dish, sometimes to share a beautiful dining setting, and sometimes to celebrate with friends.
-            Please give your analysis on the image in one short sentence.
-            """
-            response = model.chat(
-                messages=[
-                    {
-                        "role": "user",
-                        "content": [
-                            {"type": "text", "text": prompt},
-                            {"type": "image_url", "image_url": {"url": "data:image/jpeg;base64," + encoded_image}}
-                        ],
-                    }
-                ]
-            )
-            response_output = response['choices'][0]['message']['content']
-            if 'Error' in response_output or 'error' in response_output:
-                continue
-            else:
-                curr.append(response_output)
-        except requests.exceptions.Timeout:
-            print("Request timed out: Server did not respond within the specified time.")
+                prompt = """
+                You are a specialist in interpreting food and dining photography.
+                You carefully study visual elements to uncover what words often leave out: the vibrancy of presentation, the elegance of plating, the portion size, and even the mood of the dining environment. 
+                You understand that users take photos for a reason: sometimes to remember a favorite dish, sometimes to share a beautiful dining setting, and sometimes to celebrate with friends.
+                Please give your analysis on the image in one short sentence.
+                """
+                response = model.chat(
+                    messages=[
+                        {
+                            "role": "user",
+                            "content": [
+                                {"type": "text", "text": prompt},
+                                {"type": "image_url", "image_url": {"url": "data:image/jpeg;base64," + encoded_image}}
+                            ],
+                        }
+                    ]
+                )
+                response_output = response['choices'][0]['message']['content']
+                if 'Error' in response_output or 'error' in response_output:
+                    continue
+                else:
+                    curr.append(response_output)
+            except requests.exceptions.Timeout:
+                print("Request timed out: Server did not respond within the specified time.")
 
     return curr
 

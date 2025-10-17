@@ -2,54 +2,81 @@ import gradio as gr
 import utils
 import tools
 
-with gr.Blocks() as demo:
-    gr.Markdown("## Restaurant Recommender")
-    images = gr.Gallery(type='filepath')
-    print(images)
-    r_type = gr.Dropdown(["Restaurant", "Cafe", "Bar"], label="Restaurant Type")
-    r_price = gr.Textbox(label='Restaurant Price Tier (0 (unknown), 1 ($), 2 ($$-$$$), 3 ($$$$))')
-    r_rating = gr.Textbox(label='Average Restaurant Rating (0-5)')
-    user_rating = gr.Textbox(label='Your rating on the restaurant (0-5)')
-    review_title = gr.Textbox(label='The title of your review (short review)')
-    review_text = gr.Textbox(label='The text of your review (long review)')
-    submit = gr.Button("Add a visit history")
-    new_user_visit = gr.Textbox(label="Final Recommendation", lines=10, interactive=False)
-    
-    # user_visit_history = []
-    # with open('synthetic-visit-histories/synthetic_visit_histories.txt', 'r') as f:
-    #     for line in f:
-    #         user_visit_history.append(line.strip()) # Remove newline characters
+def show_section():
+    # Show the hidden section and disable the button
+    return gr.update(visible=True), gr.update(interactive=False)
 
-    # new_visit_history = utils.add_user_visit(r_type, r_price, r_rating, user_rating, 
-    #                                          review_title, review_text,images)
-    # user_visit_history.append(new_visit_history)
+def update_visit_history(r_type, r_price, r_rating, user_rating, review_title, review_text, images):
+    user_visit_history = []
+    with open('synthetic-visit-histories/synthetic_visit_histories.txt', 'r') as f:
+        for line in f:
+            user_visit_history.append(line.strip()) # Remove newline characters
+    new_visit_history = utils.add_user_visit(r_type, r_price, r_rating, user_rating, 
+                                            review_title, review_text,images)
+    user_visit_history.append(new_visit_history)
+
+    #Update the history txt
+    if len(user_visit_history) > 10:
+        user_visit_history.pop(0)
+    with open('synthetic-visit-histories/synthetic_visit_histories.txt', 'w') as f:
+        for item in user_visit_history:
+            f.write(f"{item}\n")
+
+    return (gr.update(value="Added Successfully! You may add a new one!"),
+            gr.update(value=[]),
+            gr.update(value=""),
+            gr.update(value=""),
+            gr.update(value=""),
+            gr.update(value=""),
+            gr.update(value="")
+    )
+
+with gr.Blocks() as demo:
+    gr.Markdown("## Your Personalized Restaurant Recommender")
+    show_button = gr.Button("If you would like to add a recent restaurant visit, please click here.")
+
+    with gr.Row(equal_height=True, visible=False) as hidden_section:
+        with gr.Column():
+            gr.Markdown("## Upload photos of your recent restaurant visits (Optional)")
+            images = gr.Gallery(type='filepath')
+
+        with gr.Column():
+            gr.Markdown("## Reviews and Info about the recent restaurant visit")
+
+            with gr.Column():
+                r_type = gr.Dropdown(["Restaurant", "Cafe", "Bar"], label="Restaurant Type")
+                r_price = gr.Textbox(label='Restaurant Price Tier (0 (unknown), 1 ($), 2 ($$-$$$), 3 ($$$$))')
+                r_rating = gr.Textbox(label='Average Restaurant Rating (0-5)')
+                user_rating = gr.Textbox(label='Your rating on the restaurant (0-5)')
+                review_title = gr.Textbox(label='The title of your review (short review)')
+                review_text = gr.Textbox(label='The text of your review (long review)')
+                add_history_button = gr.Button("Add a Visit History to the Existing Histories (will only keep the 10 most recent visits)")
+    
+    show_button.click(show_section, outputs=[hidden_section, show_button])
+
+    add_history_button.click(update_visit_history,
+                 inputs=[r_type, r_price, r_rating, user_rating, review_title, review_text,images], 
+                 outputs=[add_history_button,images,r_price,r_rating,user_rating,review_title,review_text])
+
+    gr.Markdown("## It's time to ask for the suggestion!")
 
     crew = tools.crew_builup()
-    
-    def recommend(r_type, r_price, r_rating, user_rating, review_title, review_text, images):
+
+    def recommend(message, history):
         user_visit_history = []
         with open('synthetic-visit-histories/synthetic_visit_histories.txt', 'r') as f:
             for line in f:
                 user_visit_history.append(line.strip()) # Remove newline characters
-        new_visit_history = utils.add_user_visit(r_type, r_price, r_rating, user_rating, 
-                                             review_title, review_text,images)
-        user_visit_history.append(new_visit_history)
         
-        inputs = {"visit_history": user_visit_history}
+        inputs = {"visit_history": user_visit_history,
+                "user_question": message}
 
-        return crew.kickoff(inputs=inputs) 
-
-    # submit.click(recommend,
-    #              inputs=[crew,inputs],
-    #              outputs=[final_recommendation])
-
-    # submit.click(utils.add_user_visit, 
-    #              inputs=[r_type, r_price, r_rating, user_rating, review_title, review_text,images], 
-    #              outputs=[new_user_visit])
-
-    submit.click(recommend, 
-                 inputs=[r_type, r_price, r_rating, user_rating, review_title, review_text, images], 
-                 outputs=[new_user_visit])
+        return str(crew.kickoff(inputs=inputs))
+    
+    gr.ChatInterface(
+        fn=recommend, 
+        type="messages"
+    ).launch()
 
 if __name__ == "__main__":
     demo.launch(share=True)
