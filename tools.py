@@ -4,14 +4,13 @@ from ibm_watsonx_ai.foundation_models.utils.enums import EmbeddingTypes
 
 from langchain_core.documents import Document
 from langchain_chroma import Chroma
-from langchain_ibm import WatsonxEmbeddings, WatsonxLLM
+from langchain_ibm import WatsonxEmbeddings
 from langchain_core.documents import Document
 
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Type
 from IPython.display import display, JSON, Markdown
 from crewai.tools import BaseTool
-from langchain.tools import tool
 
 from crewai import LLM
 from crewai import Agent, Crew, Process, Task
@@ -41,7 +40,7 @@ class UserProfile(BaseModel):
 
 def crew_builup():
 
-    path = 'restaurant-database/Synthetic-Restaurants-Cafes-Bakeries.json' # Database URL
+    path = 'restaurant-database/Synthetic_Restaurants_Cafes_Bakeries.json' # Database URL
 
     # Check if the request was successful (status code 200)
     with open(path, 'r') as f:
@@ -185,7 +184,7 @@ def crew_builup():
         restaurant_recommendation_task = Task(
             description=tasks_config['restaurant_recommendation_task']['description'],
             expected_output=tasks_config['restaurant_recommendation_task']['expected_output'],
-            agent=food_trend_researcher,
+            agent=restaurant_recommendation_expert,
             depends_on=['user_profile_task','coarse_recommend_task','food_trend_task'],
             input_data=lambda outputs:{
                 'user_profile': outputs['user_profile_task'].raw,
@@ -197,8 +196,8 @@ def crew_builup():
         restaurant_recommendation_task = Task(
             description=tasks_config['restaurant_recommendation_task']['description'],
             expected_output=tasks_config['restaurant_recommendation_task']['expected_output'],
-            agent=food_trend_researcher,
-            depends_on=['user_profile_task','coarse_recommend_task','food_trend_task'],
+            agent=restaurant_recommendation_expert,
+            depends_on=['user_profile_task','coarse_recommend_task'],
             input_data=lambda outputs:{
                 'user_profile': outputs['user_profile_task'].raw,
                 'database_restaurants': outputs['coarse_recommend_task'].raw
