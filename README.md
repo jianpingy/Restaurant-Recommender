@@ -1,0 +1,19 @@
+## Overview
+This repo builds a chatbot for personalized restaurant recommendations.
+
+## Get started
+Clone the repo.
+```bash
+git clone https://github.com/jianpingy/Restaurant-Recommender.git
+cd Restaurant-Recommender
+```
+
+Install the required packages.
+```bash
+pip install -r requirements.txt
+```
+
+Run the gradio interface.
+```bash
+gradio ui.py
+```
