@@ -31,9 +31,26 @@ def update_visit_history(r_type, r_price, r_rating, user_rating, review_title, r
             gr.update(value="")
     )
 
-with gr.Blocks() as demo:
-    gr.Markdown("## Your Personalized Restaurant Recommender")
-    show_button = gr.Button("If you would like to add a recent restaurant visit, please click here.")
+css = """
+.centered-markdown {
+    text-align: center;
+    display: block; /* Ensure the element behaves as a block for text-align to work */
+}
+
+#my_submit_button {
+      background-color: #0000FF; /* Blue */
+      color: white;
+}
+
+#visit_submit_button {
+      background-color: #0000FF; /* Blue */
+      color: white;
+}
+"""
+
+with gr.Blocks(theme=gr.themes.Soft(), css=css) as demo:
+    gr.Markdown("## Your Personalized Restaurant Recommender", elem_classes="centered-markdown")
+    show_button = gr.Button("If you would like to add a recent restaurant visit, CLICK here!", elem_id="my_submit_button")
 
     with gr.Row(equal_height=True, visible=False) as hidden_section:
         with gr.Column():
@@ -50,7 +67,7 @@ with gr.Blocks() as demo:
                 user_rating = gr.Textbox(label='Your rating on the restaurant (0-5)')
                 review_title = gr.Textbox(label='The title of your review (short review)')
                 review_text = gr.Textbox(label='The text of your review (long review)')
-                add_history_button = gr.Button("Add a Visit History to the Existing Histories (will only keep the 10 most recent visits)")
+                add_history_button = gr.Button("Add a Visit History to the Existing Histories (will only keep the 10 most recent visits)",elem_id="visit_submit_button")
     
     show_button.click(show_section, outputs=[hidden_section, show_button])
 
