@@ -19,7 +19,7 @@ credentials = Credentials(
                    url = "https://us-south.ml.cloud.ibm.com",
                   )
 
-project_id = "skills-network"
+project_id = os.environ.get('WATSONX_AI_PROJECT_ID')
 
 # Get sample parameter values
 sample_params = TextChatParameters.get_sample_params()
