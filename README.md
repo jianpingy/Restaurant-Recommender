@@ -13,6 +13,11 @@ Install the required packages.
 pip install -r requirements.txt
 ```
 
+Create an ``.env`` file for ``WATSONX_AI_PROJECT_ID``.
+```bash
+cp .env.example .env
+```
+
 Run the gradio interface.
 ```bash
 gradio ui.py
