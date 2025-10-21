@@ -76,7 +76,7 @@ with gr.Blocks() as demo:
     gr.ChatInterface(
         fn=recommend, 
         type="messages"
-    ).launch()
+    )
 
 if __name__ == "__main__":
     demo.launch(share=True)
