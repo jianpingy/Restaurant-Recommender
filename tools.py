@@ -20,9 +20,6 @@ import yaml
 import os 
 import json
 
-from dotenv import load_dotenv
-load_dotenv()
-
 # Define credentials for LLMs usage
 credentials = Credentials(
                 url = "https://us-south.ml.cloud.ibm.com",

@@ -12,6 +12,9 @@ import base64
 from ibm_watsonx_ai.foundation_models import ModelInference
 from ibm_watsonx_ai.foundation_models.schema import TextChatParameters
 
+from dotenv import load_dotenv
+load_dotenv()
+
 
 
 # Define credentials for LLMs usage
