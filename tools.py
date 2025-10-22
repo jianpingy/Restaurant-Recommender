@@ -116,7 +116,7 @@ def crew_builup():
     llm = LLM(
             model="watsonx/meta-llama/llama-3-3-70b-instruct",
             base_url="https://us-south.ml.cloud.ibm.com",
-            project_id="skills-network",
+            project_id=project_id,
             max_tokens=2000,
     )
 
