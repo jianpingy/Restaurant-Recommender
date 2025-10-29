@@ -25,7 +25,7 @@ credentials = Credentials(
                 url = "https://us-south.ml.cloud.ibm.com",
                 )
 
-project_id = os.environ.get('WATSONX_AI_PROJECT_ID')
+project_id = "skills-network"
 
 class RetrieverToolInput(BaseModel):
     """Input schema for MyCustomTool."""
