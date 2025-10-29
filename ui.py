@@ -1,6 +1,12 @@
 import gradio as gr
 import utils
 import tools
+import os
+
+os.environ['CREWAI_DISABLE_TELEMETRY']='true'
+os.environ['CREWAI_DISABLE_TRACING']='true'
+os.environ['CREWAI_TELEMETRY']='false'
+os.environ['OTEL_SDK_DISABLED']='true'
 
 def show_section():
     # Show the hidden section and disable the button
