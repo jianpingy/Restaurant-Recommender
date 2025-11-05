@@ -47,7 +47,7 @@ def crew_builup():
         restaurant_db = json.load(f)
 
     embeddings = WatsonxEmbeddings(
-        model_id=EmbeddingTypes.IBM_SLATE_30M_ENG.value,
+        model_id='ibm/slate-30m-english-rtrvr-v2',
         url=credentials["url"],
         project_id=project_id,
         )
