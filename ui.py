@@ -81,7 +81,7 @@ with gr.Blocks(theme=gr.themes.Soft(), css=css) as demo:
                  inputs=[r_type, r_price, r_rating, user_rating, review_title, review_text,images], 
                  outputs=[add_history_button,images,r_price,r_rating,user_rating,review_title,review_text])
 
-    gr.Markdown("## It's time to ask for the suggestion!")
+    gr.Markdown("## It's time to ask for the suggestion! (Be PATIENT, may take up to 2 minutes for the response)")
 
     crew = tools.crew_builup()
 
